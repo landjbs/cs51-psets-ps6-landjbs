@@ -1,0 +1,46 @@
+#CS 51 Problem Set 6 - Write Up #
+
+## April 3, 2019 ##
+
+In this problem set, I attempted to implement a puzzle solver, with the intent
+of using systematic, non-redundant progression through set of possible states
+to find the solutions to a variety of problems (eg. mazes).
+
+The solver was unsuccessful however, in that it stuck in an infinite recursion.
+This caused it to run indefinitely, rarely actually examining the goal state,
+which got buried under a number of other states. With lots of exams and having
+made the stupid decision to work on this pset alone (I thought I might learn
+more), I was unable to find exactly why this might be happening, despite
+spending hours testing. I hypothesize that the problem is coming in the to_add
+section of the code, and that the same state is being added and pulled from
+the top of the pending collection multiple times. While this doesn't mean that
+the code couldn't theoretically find the solution, it does mean that it is very
+likely to get stuck in local holes, bouncing back and forth between two states.
+There might also be something wrong with the inputs to the recursive call,
+as my tests indicated that the move list stored in pending was not incrementing
+by one with every iteration, as would be expected. With all this said, I have
+tried lots of possible changes to my code, and found nothing successful. I am
+truly lost as to where the exact problem might be. I wish I had had more time
+to figure out what is wrong, and hope to solve the problem soon. Hopefully the
+code that I do have makes sense as to my intentions and speaks for the design
+of my puzzlesolver.
+
+*EDIT:* I made some last minute updates to puzzlesolver and fixed a bug in
+states_to_set that was causing my code to infinitely clear the visited set.
+This supports my previous hypothesis that the solver was getting stuck close to
+the origin, perpetually moving back and forth. I also fixed a bug that was
+preventing the neighbors_to_col match case from properly terminating. These
+fixes allow the puzzles solver to run, giving times of:
+
+Regular BFS Tiles
+  time (msecs): 620.255947
+  time (msecs): 598.282099
+  time (msecs): 594.810963
+  time (msecs): 606.374979
+  time (msecs): 603.506088
+
+However, the code now throws the error
+**Tiles.MakeTilePuzzleDescription(T).InvalidMove** when it tries to
+execute_moves the moves of this solution. I am not sure why this is the case,
+but looking into the movList that I return at the end of puzzlesolver, it
+appears that the list is not properly incrementing throughout the recursions.
